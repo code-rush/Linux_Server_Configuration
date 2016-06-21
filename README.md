@@ -75,3 +75,35 @@ _You have to be logged in as root_
 	Change `PasswordAuthentication` from `yes` to `no`
 
 
+### 5) Changing SSH port from 22 to 2200
+
+1. nano into sshd_config file:
+	`$ nano /etc/ssh/sshd_config`
+2. Change Port 22 to Port 2200 and save the file.
+3. Restart the ssh service:
+	`$ sudo service ssh restart`
+
+
+### 6) Configuring Uncomplicated Firewall (ufw) to allow only specified incoming connections
+
+1. Deny all incoming connections (Make sure firewall is inactice):
+	* To check ufw status:
+		`$ sudo ufw status`
+	* Denying all incoming connections:
+		`$ sudo ufw default deny incoming`
+2. Allow incoming connections for SSH(port 2200), HTTP(port 80) and NTP(port 123):
+	* `$ sudo ufw allow 2200`
+	* `$ sudo ufw allow 80`
+	* `$ sudo ufw allow 123`
+3. Now, activate firewall. (Make sure to allow connection for ssh before activating the firewall).
+	`$ sudo ufw enable`
+
+
+### 7) Configuring local timezone to UTC
+
+1. Open the timezone selection dialog:
+	`$ sudo dpkg-reconfigure tzdata`
+2. Choose none of the above and then UTC.
+
+
+### 8)

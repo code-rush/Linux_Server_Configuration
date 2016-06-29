@@ -106,4 +106,118 @@ _You have to be logged in as root_
 2. Choose none of the above and then UTC.
 
 
-### 8)
+### 8) Installing and Configuring Aapache to server a Python and mod_wsgi application
+
+1. Install Apache server:
+	`$ sudo apt-get install apache2`
+2. Go to your PUBLIC-IP-ADDRESS in a browser and it should say __"It Works!"__.
+3. Installing dependencies: 
+	`$ sudo apt-get install python-setuptools libapache2-mod-wsgi`
+4. Restart Apache server for __mod_wsgi__ to load:
+	`$ sudo service apache2 restart`
+5. Getting rid of the error message "Could not reliably determine the server's..."
+	*  `$ sudo nano /etc/apache2/conf-available/YOUR-HOSTNAME.conf`
+	*  Write -> ServerName YOUR-HOSTNAME in the file and save it.
+	*  `$ sudo a2enconf YOUR-HOSTNAME`
+	*  `$ sudo service apache2 reload`
+
+
+### 9) Installing and Configuring git
+
+1. Install Git:
+	`$ sudo apt-get install git`
+2. Configure git with your name and email address:
+	`$ git config --global user.name "YOUR USERNAME"`
+	`$ git config --global user.email "YOUR EMAIL ADDRESS"`
+
+
+### 10) Configuration setup to deploy Flask Application
+
+1. Installing and enabling mod_wsgi:
+	`$ sudo apt-get install libapache2-mod-wsgi python-dev`
+2. Enable mod_wsgi:
+	`$ sudo a2enmod wsgi`
+3. Creating Flask App:
+	i. First cd into /var/www directory:
+		* `$ cd /var/www`
+	ii. Create a new directory and give a name to the directory:
+		* `$ sudo mkdir FLASK-APP-DIR-NAME`
+	iii. Create a new directory inside the FLASK-APP-DIR-NAME and give the same name:
+		* `$ cd FLASK-APP-DIR-NAME`
+		* `$ sudo mkdir FLASK-APP-DIR-NAME`
+	iv. Move inside this directory and create two subdirectories named _static_ and _templates_ :
+		* `$ cd FLASK-APP-DIR-NAME`
+		* `$ sudo mkdir static templates`
+	v. Create file that will contain flask application logic and the logic to it:
+		* `$ sudo nano __init__.py`
+		* `from flask import Flask`
+		  `app = Flask(__name__)`
+		  `@app.route("/")`
+		  `def hello():`
+    	  `	  return "Hello, World!"`
+		  `if __name__ == "__main__":`
+    	  `   app.run()`
+    	* Save and close the file.
+4. Installing flask:
+	i: Install pip which we will use to install virtual environment and flask:
+		* `$ sudo apt-get install python-pip`
+	ii. Install _virtualenv_:
+		* `$ sudo pip install virtualenv`
+	iii. Execute the following command where _venv_ is the name you would like to give to your temp environment:
+		* `$ sudo virtualenv venv`
+	iv. Install Flask in that environment by activating the virtual environment by executing following command:
+		* `$ source venv/bin/activate` (where _venv_ is the name you gave to the virtual environment)
+	v. Execute the following commands to install Flask inside:
+		* `$ sudo pip install Flask`
+	vi. Execute the following command and test if the installation is successfull and the app is running:
+		* `$ sudo python __init__.py`
+		* Open the browser and go to YOUR-PUBLIC-IP-ADDRESS and the app should be running if everything is working fine.
+	vii. To deactivate the environment, execute the following command:
+		`$ deactivate`
+5. Configuring and enabling a new virtual host
+	i. Issue the following command:
+		`$ sudo nano /etc/apache2/sites-available/FLASK-APP-DIR-NAME.conf`
+	ii. Add the following lines of code to the file to configure the virtual host. Be sure to make the changes and save it.
+		`<VirtualHost *:80>`
+		`ServerName YOUR-PUBLIC-IP-ADDRESS`
+		`ServerAdmin USER@PUBLIC-IP-ADDRESS`
+		`WSGIScriptAlias / /var/www/FLASK-APP-DIR-NAME/FLASK-APP-DIR-NAME.wsgi`
+		`<Directory /var/www/FLASK-APP-DIR-NAME/FLASK-APP-DIR-NAME/>`
+		`	Order allow,deny`
+		`	Allow from all`
+		`</Directory>`
+		`Alias /static /var/www/FLASK-APP-DIR-NAME/FLASK-APP-DIR-NAME/static`
+		`<Directory /var/www/FLASK-APP-DIR-NAME/FLASK-APP-DIR-NAME/static/>`
+		`	Order allow,deny`
+		`	Allow from all`
+		`</Directory>`
+		`ErrorLog ${APACHE_LOG_DIR}/error.log`
+		`LogLevel warn`
+		`CustomLog ${APACHE_LOG_DIR}/access.log combined`
+		`</VirtualHost>`
+6. Enable the virtual host with the following command:
+	`$ sudo a2ensite FLASK-APP-DIR-NAME`
+7. Creating the .wsgi File:
+	i. Move to the /var/www/FLASK-APP-DIR-NAME directory and create a file names FLASK-APP-DIR-NAME.wsgi:
+		* `$ cd /var/www/FLASK-APP-DIR-NAME`
+		* `$ sudo nano FLASK-APP-DIR-NAME.wsgi`
+	ii. Add the following lines of code to the FLASK-APP-DIR-NAME.wsgi file:
+		`#!/usr/bin/python`
+		`import sys`
+		`import logging`
+		`logging.basicConfig(stream=sys.stderr)`
+		`sys.path.insert(0,"/var/www/FLASK-APP-DIR-NAME/")`
+		`	`
+		`from FLASK-APP-DIR-NAME import app as Application`
+		`application.secret_key = 'Add your secret key'`
+8. Restart Apache:
+	`$ sudo service apache2 restart`
+
+	
+
+
+
+
+
+
+

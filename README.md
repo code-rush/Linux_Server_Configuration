@@ -213,7 +213,87 @@ _You have to be logged in as root_
 8. Restart Apache:
 	`$ sudo service apache2 restart`
 
-	
+
+
+### 11) Installing PostgreSQL
+
+1. Execute the following command to install PostgreSQL:
+	`$ sudo apt-get install postgresql postgresql-contrib`
+
+
+
+### 13) Cloning and Configuring a Flask project from GitHub repository
+
+1. Go the FLASK-APP-DIR which you created while setting up FLASK APP:
+	`$ cd /var/www/FLASK-APP-DIR-NAME/FLASK-APP-DIR-NAME`
+2. Clone a flask app project repo:
+	`$ git clone http://github.com/YOUR-USERNAME/FLASK-APP-REPO.git`
+3. Move main flask app file contents to `__init__.py` by:
+	`$ mv project.py __init__.py`
+4. Create the hiearchy as needed for Flask Application to work fine.
+5. Making the GitHub repository inaccessbile by public:
+	* Create `.htaccess` file and write `RedirectMatch 404 /\.git` and save it:
+		`$ sudo nano /var/www/FLASK-APP-DIR-NAME/.htaccess`
+
+
+
+
+### 14) Installing packages needed for the application to run:
+
+1. Activate vitrual environment by executing following code:
+	`$ source venv/bin/activate` -> where _venv_ is the name you gave while creating the Environment.
+2. Install all the packages from `requirements.txt` file:
+	`$ pip install -r requirements.txt`
+3. Install the following packages globally:
+	`$ sudo pip intsall flask-seasurf`
+	`$ sudo pip install sqlalchemy`
+	`$ sudo apt-get install python-psycopg2`
+
+
+### 15) Configuring PostgreSQL
+
+1. Check that no remote connections are allowed(default):
+	`$ sudo nano /etc/postgresql/9.3/main/pg_hba.conf`
+2. Change lines in the .py files where the line executes the connection to the databse:
+	`engine = create_engine('postgresql://item_catalog:PASSWORD-FOR-DATABASE@localhost/item_catalog)`
+3. Create needed linux user for psql:
+	`sudo adduser item_catalog`
+4. Change to default user postgres:
+	`sudo su - postgre`
+5. Connect to the system:
+	`$ psql`
+6. Add postgres user with password:
+	i. Create user with login role and set a password:
+		` create USER catalog with password 'PASSWORD-FOR-DATABASE';`
+	ii. Allow the user to create database tables:
+		` alter USER catalog CREATEDB;`
+7. Create database:
+	`create database item_catalog with OWNER item_catalog;`
+8. Connect to the database item_catalog:
+ 	` \c item_catalog`
+9. Revoke all rights:
+	`revoke all on schema public from public;`
+10. Grant access to only item_catalog role:
+	`grant all on schema public to item_catalog;`
+11. Exit:
+	`\q`
+12. Exit from postgres user:
+	`$ exit`
+13. Create the database:
+	`$ python database_setup.py`
+
+
+
+### 16) Run Application
+
+1. Restart Apache server:
+	`$ sudo service apache2 restart`
+2. Go to YOUR-PUBLIC-IP-ADDRESS from a browser and enjoy. 
+
+
+** If Something is wrong and the application is not working then check error logs and find solutions for the errors.**
+* Checking error logs by following command: `$ sudo tail -20 /var/log/apache2/error.log` *
+
 
 
 

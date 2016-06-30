@@ -24,7 +24,7 @@ Here the name of the user is grader.
 	* `$ touch /etc/sudoers.d/grader`
 	* `$ nano /etc/sudoers.d/grader` 
 	* write the following line in the file and save it.
-		`grader ALL=(ALL) NOPASSWD:ALL
+		* `grader ALL=(ALL) NOPASSWD:ALL`
 
 
 _Logout from the root and ssh with "grader"_ .

@@ -266,6 +266,8 @@ if __name__ == "__main__":
 	* `$ sudo pip intsall flask-seasurf`
 	* `$ sudo pip install sqlalchemy`
 	* `$ sudo apt-get install python-psycopg2`
+	* `$ sudo pip install flasl`
+	* `$ sudo pip install oauth oauth2client`
 
 
 ### 14) Configuring PostgreSQL

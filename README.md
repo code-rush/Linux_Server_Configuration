@@ -20,11 +20,10 @@ If you are unable to download the private key, open the file in the browser and 
 1. Create new user.
 	`$ adduser grader`
 Here the name of the user is grader.
-2. Giving new user the permission to sudo, execute the following commands.
-	* `$ touch /etc/sudoers.d/grader`
-	* `$ nano /etc/sudoers.d/grader` 
-	* write the following line in the file and save it.
-		* `grader ALL=(ALL) NOPASSWD:ALL`
+2. Giving new user the permission to sudo and ask for their password atleast once, execute the following commands.
+	* `$ visudo`
+	* write the following line in the file below `root ALL=(ALL:ALL) ALL` and save it.
+		* `grader ALL=(ALL:ALL) ALL`
 
 
 _Logout from the root and ssh with "grader"_ .
@@ -164,7 +163,7 @@ _You have to be logged in as root_.
 ```python
 from flask import Flask
 app = Flask(__name__)
-@app.route("/")`
+@app.route("/")
 def hello():
 	return "Hello, World!"
 if __name__ == "__main__":
@@ -279,7 +278,7 @@ if __name__ == "__main__":
 3. Create needed linux user for psql:
 	* `sudo adduser item_catalog`
 4. Change to default user postgres:
-	* `sudo su - postgre`
+	* `sudo su - postgres`
 5. Connect to the system:
 	* `$ psql`
 6. Add postgres user with password:

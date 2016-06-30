@@ -75,8 +75,10 @@ _You have to be logged in as root_.
 	* You will be asked to enter the pass-phrase that you used earlier while creating the keys. Enter the pass-phrase.
 	* If you logged in to the server, key pair works and your identity has been added to the server.
 10. Disabing password authentication for grader.
-	* `$ sudo nanp /etc/ssh/sshd_config`
+	* `$ sudo nano /etc/ssh/sshd_config`
 	* Change `PasswordAuthentication` from `yes` to `no`
+11. Disabling root access.
+	* Change `PermitRootLogin` to `no` from `without-password`
 
 
 
